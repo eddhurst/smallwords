@@ -1,0 +1,39 @@
+{
+  "name": "smallwords",
+  "version": "0.1.0",
+  "description": "A small package to generate small words",
+  "exports": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "prebuild": "npm run clean",
+    "build": "esbuild --bundle index.js --outdir=dist --minify",
+    "clean": "rimraf dist",
+    "test": "vitest --run"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddhurst/smallwords.git"
+  },
+  "keywords": [
+    "random",
+    "words",
+    "sanitize",
+    "friendly"
+  ],
+  "author": "Edd Hurst",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eddhurst/smallwords/issues"
+  },
+  "homepage": "https://github.com/eddhurst/smallwords#readme",
+  "dependencies": {
+    "esbuild": "^0.19.4"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.5",
+    "vitest": "^0.34.6"
+  }
+}
