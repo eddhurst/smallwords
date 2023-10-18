@@ -52,12 +52,13 @@ const wordsLoader = {
         contents: all,
         loader: 'js',
       };
-    })}
+    })
+  }
 }
 
 
 esbuild.build({
-  entryPoints: ['index.js'],
+  entryPoints: ['src/index.js'],
   bundle: true,
   minify: true,
   outfile: 'dist/index.js',
