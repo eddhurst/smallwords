@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "prebuild": "npm run clean",
-    "build": "esbuild --bundle index.js --outdir=dist --minify",
-    "convert": "node ./tasks/convertToTree.js",
+    "build": "node build.js",
     "clean": "rimraf dist",
     "test": "vitest --run"
   },
@@ -30,10 +29,8 @@
     "url": "https://github.com/eddhurst/smallwords/issues"
   },
   "homepage": "https://github.com/eddhurst/smallwords#readme",
-  "dependencies": {
-    "esbuild": "^0.19.4"
-  },
   "devDependencies": {
+    "esbuild": "^0.19.5",
     "rimraf": "^5.0.5",
     "vitest": "^0.34.6"
   }

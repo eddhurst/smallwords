@@ -1,4 +1,4 @@
-import words from './src/approved.min.js';
+import words from './approved.txt';
 
 // TODO: update to reflect dictionary structure
 export const getWord = () => {
