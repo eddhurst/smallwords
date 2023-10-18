@@ -1,30 +1,32 @@
-import { expect, describe, it, beforeAll, afterAll, vi } from 'vitest';
-import { getWord } from '../index';
+import { expect, describe, it } from 'vitest';
+import { checkWordExists, generateNWords, generateWord } from '../dist/index';
 
-let originalRandom;
+describe('checkWordExists', () => {
+  it('should validate a word is in the dictionary', () => {
+    expect(checkWordExists("ABATE")).toBe(true);
+  });
 
-describe('getWord', () => {
-  const mockRandom = vi.fn();
+  it('should validate a word is not the dictionary', () => {
+    expect(checkWordExists("AAAAA")).toBe(false);
+  });
+});
 
-  beforeAll(() => {
-    originalRandom = Math.random;
-    Math.random = mockRandom;
-  })
-  
-  afterAll(() => {
-    Math.random = originalRandom
-  })
+describe('generate function', () => {
+  describe('generateWord', () => {
+    it('should generate a word', () => {
+      const word = generateWord();
+      expect(word.length).toBe(5);
+      expect(checkWordExists(word)).toBe(true);
+    });
+  });
 
-  it('should return expected words', () => {
-    mockRandom.mockImplementation(() => 0.0001);
-    expect(getWord()).toBe("ABATE")
-    
-    mockRandom.mockImplementation(() => 0.2);
-    expect(getWord()).toBe("CRIME")
-
-    mockRandom.mockImplementation(() => 0.9999);
-    expect(getWord()).toBe("YOUTH")
-
-    expect(mockRandom).toBeCalledTimes(3);
-  })
-})
+  describe('generateNWords', () => {
+    it('should generate N random words', () => {
+      const words = generateNWords(5);
+      expect(words.length).toBe(5);
+      words.forEach(word => {
+        expect(checkWordExists(word)).toBe(true);
+      });
+    });
+  });
+});

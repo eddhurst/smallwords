@@ -8,6 +8,7 @@
     "prebuild": "npm run clean",
     "build": "node build.js",
     "clean": "rimraf dist",
+    "pretest": "npm run build",
     "test": "vitest --run"
   },
   "engines": {

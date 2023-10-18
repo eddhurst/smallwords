@@ -1,17 +1,47 @@
 import words from '../wordlists/approved.txt';
 
-// TODO: update to reflect dictionary structure
-export const getWord = () => {
-  const index = Math.floor(Math.random() * words.length);
-  return words[index];
+const checkWordExists = (word) => {
+  let tree = words;
+  for (let i = 0; i < word.length; i++) {
+    if (Array.isArray(tree)) {
+      return !!tree.includes(word[i]);
+    }
+
+    tree = tree[word[i]];
+
+    if (!tree) {
+      return false;
+    }
+  }
 }
 
-const logWord = () => {
-  const word = getWord();
-  console.info(word);
-  return word;
+const generateWord = () => {
+  let tree = words;
+  let branch;
+  let word = [];
+
+  for (let i = 0; i < 5; i++) {
+    if (Array.isArray(tree)) {
+      branch = tree;
+    } else {
+      branch = Object.keys(tree)
+    }
+
+    const randomLetter = Math.floor(Math.random() * branch.length);
+    word.push(branch[randomLetter]);
+
+    tree = tree[branch[randomLetter]];
+  }
+
+  return word.join('');
 }
 
-export default logWord;
+const generateNWords = (count) => {
+  const words = []
+  for (let i = 0; i < count; i++) {
+    words.push(generateWord())
+  }
+  return words;
+}
 
-console.info(words);
+export { checkWordExists, generateWord, generateNWords };
