@@ -1,6 +1,6 @@
 {
   "name": "smallwords",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A small package to generate small words",
   "exports": "./dist/index.js",
   "type": "module",
@@ -9,11 +9,15 @@
     "build": "node build.js",
     "clean": "rimraf dist",
     "pretest": "npm run build",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "prepublish": "npm run build"
   },
   "engines": {
     "node": ">=16"
   },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eddhurst/smallwords.git"
