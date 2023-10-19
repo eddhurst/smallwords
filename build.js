@@ -45,7 +45,7 @@ const wordsLoader = {
   setup(build) {
     build.onLoad({ filter: /.txt$/ }, async (args) => {
       const allWords = fs.readFileSync(args.path, 'utf-8');
-      const allTree = convertToTree(allWords.split('\n'));
+      const allTree = convertToTree(allWords.replaceAll(/\r/g,'').split('\n'));
       const all = exportAsString(allTree);
 
       return {
