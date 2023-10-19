@@ -1,6 +1,6 @@
 {
   "name": "smallwords",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Super small script gives words (chars = fives). Store trees - keeps sizes lower. Check valid. Great speed.",
   "exports": "./dist/index.js",
   "type": "module",
