@@ -24,8 +24,6 @@ const addToTree = (word, branch) => {
 }
 
 const convertToTree = (wordlist) => {
-  console.log("Converting to Tree structure");
-
   const result = {};
 
   wordlist.forEach((word) => {
@@ -40,7 +38,7 @@ const exportAsString = (tree) => {
   export default ${JSON.stringify(tree).replaceAll('"', '')};`
 }
 
-const wordsLoader = {
+export const wordsLoader = {
   name: 'words-loader',
   setup(build) {
     build.onLoad({ filter: /.txt$/ }, async (args) => {
@@ -56,12 +54,21 @@ const wordsLoader = {
   }
 }
 
-
 esbuild.build({
   entryPoints: ['src/index.js'],
   bundle: true,
   minify: true,
   outfile: 'dist/index.js',
   format: 'esm',
+  plugins: [wordsLoader]
+});
+
+esbuild.build({
+  entryPoints: ['src/processWords.js'],
+  bundle: true,
+  minify: true,
+  outfile: 'build/processWords.js',
+  format: 'esm',
+  platform: 'node',
   plugins: [wordsLoader]
 });

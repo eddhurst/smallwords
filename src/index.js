@@ -1,7 +1,7 @@
 import words from '../wordlists/approved.txt';
 
-const checkWordExists = (word) => {
-  let tree = words;
+const checkWordExists = (word, wordlist = words) => {
+  let tree = wordlist;
   for (let i = 0; i < word.length; i++) {
     if (Array.isArray(tree)) {
       return !!tree.includes(word[i]);
@@ -15,8 +15,8 @@ const checkWordExists = (word) => {
   }
 }
 
-const generateWord = () => {
-  let tree = words;
+const generateWord = (list = words) => {
+  let tree = list;
   let branch;
   let word = [];
 

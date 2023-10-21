@@ -7,10 +7,12 @@
   "scripts": {
     "prebuild": "npm run clean",
     "build": "node build.js",
-    "clean": "rimraf dist",
+    "clean": "rimraf dist && rimraf build",
     "pretest": "npm run build",
     "test": "vitest --run",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "preprocess": "npm run build",
+    "process": "node build/processWords.js"
   },
   "engines": {
     "node": ">=16"
