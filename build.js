@@ -72,3 +72,13 @@ esbuild.build({
   platform: 'node',
   plugins: [wordsLoader]
 });
+
+
+esbuild.build({
+  entryPoints: ['src/processFile.js'],
+  bundle: true,
+  minify: true,
+  outfile: 'build/processFile.js',
+  format: 'esm',
+  plugins: [wordsLoader]
+});

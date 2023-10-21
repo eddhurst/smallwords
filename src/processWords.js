@@ -68,7 +68,10 @@ const verify = async (answer, potential, previous) => {
       console.info(answerUpper, 'has already been processed as approved / maybe')
     }
 
-    return;
+    const rl = readline.createInterface({ input, output });
+    const undoAnswer = await rl.question(`Is ${potential} a valid word? (s-skip)/a-accept/w-whoops/d-dunno/x-exit `);
+    rl.close(); 
+    await verify(undoAnswer, potential, previous);
   }
 
   switch (answerUpper.toUpperCase()) {
@@ -76,8 +79,8 @@ const verify = async (answer, potential, previous) => {
       confirmWord(previous);
       const rl = readline.createInterface({ input, output });
       const undoAnswer = await rl.question(`Is ${potential} a valid word? (s-skip)/a-accept/w-whoops/d-dunno/x-exit `);
+      rl.close();
       await verify(undoAnswer, potential, previous)
-      rl.close()
       break;
     case 'A': // ACCEPT - Confirm current answer
       confirmWord(potential);
@@ -122,8 +125,8 @@ const validate = async (previous) => {
   const potential = getPotentialWord(1)
 
   const answer = await rl.question(`Is ${potential} a valid word? (s-skip)/a-accept/w-whoops/d-dunno/x-exit `);
-  await verify(answer, potential, previous);
   rl.close();
+  await verify(answer, potential, previous);
   validate(potential);
 }
 
