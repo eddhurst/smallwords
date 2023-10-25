@@ -26,15 +26,15 @@ const close = () => {
   console.info(verifiedOutput);
 
   if (verifiedOutput.length > 0) {
-    fs.appendFileSync('./wordlists/approved.txt', `${verifiedOutput.join('\n')}\n`); 
+    fs.appendFileSync('./wordlists/approved.txt', `${verifiedOutput.join('\n')}\n`);
   }
 
   if (maybeOutput.length > 0) {
-    fs.appendFileSync('./wordlists/maybe.txt', `${maybeOutput.join('\n')}\n`); 
+    fs.appendFileSync('./wordlists/maybe.txt', `${maybeOutput.join('\n')}\n`);
   }
 
   if (rejectedOutput.length > 0) {
-    fs.appendFileSync('./wordlists/rejected.txt', `${rejectedOutput.join('\n')}\n`); 
+    fs.appendFileSync('./wordlists/rejected.txt', `${rejectedOutput.join('\n')}\n`);
   }
 
   process.exit();
@@ -70,7 +70,7 @@ const verify = async (answer, potential, previous) => {
 
     const rl = readline.createInterface({ input, output });
     const undoAnswer = await rl.question(`Is ${potential} a valid word? (s-skip)/a-accept/w-whoops/d-dunno/x-exit `);
-    rl.close(); 
+    rl.close();
     await verify(undoAnswer, potential, previous);
   }
 
@@ -122,7 +122,7 @@ const getPotentialWord = (attempt) => {
 
 const validate = async (previous) => {
   const rl = readline.createInterface({ input, output });
-  const potential = getPotentialWord(1)
+  const potential = getPotentialWord(1);
 
   const answer = await rl.question(`Is ${potential} a valid word? (s-skip)/a-accept/w-whoops/d-dunno/x-exit `);
   rl.close();

@@ -75,10 +75,19 @@ esbuild.build({
 
 
 esbuild.build({
-  entryPoints: ['src/processFile.js'],
+  entryPoints: ['src/processApprovedWords.js'],
   bundle: true,
   minify: true,
-  outfile: 'build/processFile.js',
+  outfile: 'wordlists/approved.js',
+  format: 'esm',
+  plugins: [wordsLoader]
+});
+
+esbuild.build({
+  entryPoints: ['src/processAllWords.js'],
+  bundle: true,
+  minify: true,
+  outfile: 'wordlists/words.js',
   format: 'esm',
   plugins: [wordsLoader]
 });
