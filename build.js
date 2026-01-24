@@ -64,7 +64,7 @@ esbuild.build({
 });
 
 esbuild.build({
-  entryPoints: ['src/processWords.js'],
+  entryPoints: ['src/utilities/processWords.js'],
   bundle: true,
   minify: true,
   outfile: 'build/processWords.js',
@@ -75,7 +75,7 @@ esbuild.build({
 
 
 esbuild.build({
-  entryPoints: ['src/processApprovedWords.js'],
+  entryPoints: ['src/utilities/processApprovedWords.js'],
   bundle: true,
   minify: true,
   outfile: 'wordlists/approved.js',
@@ -84,7 +84,7 @@ esbuild.build({
 });
 
 esbuild.build({
-  entryPoints: ['src/processAllWords.js'],
+  entryPoints: ['src/utilities/processAllWords.js'],
   bundle: true,
   minify: true,
   outfile: 'wordlists/words.js',

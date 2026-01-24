@@ -1,40 +1,45 @@
 import fs from 'fs';
 import * as readline from 'node:readline/promises';  // This uses the promise-based APIs
 import { stdin as input, stdout as output } from 'node:process';
-import words from '../wordlists/words.txt'
-import approvedList from '../wordlists/approved.txt';
-import maybeList from '../wordlists/maybe.txt';
-import ignoredList from '../wordlists/rejected.txt';
-import { generateWord, checkWordExists } from './index.js';
+import words from '../../wordlists/words.txt'
+import approvedList from '../../wordlists/approved.txt';
+import maybeList from '../../wordlists/maybe.txt';
+import ignoredList from '../../wordlists/rejected.txt';
+import { generateWord, checkWordExists } from '../index.js';
 
 let verified = new Set();
 let rejected = new Set();
 let maybe = new Set();
+let plurals = new Set();
 
 const close = () => {
   const rejectedOutput = Array.from(rejected);
   const maybeOutput = Array.from(maybe);
   const verifiedOutput = Array.from(verified);
+  const pluralOutput = Array.from(plurals);
 
-  console.info(`\n===== Rejected Words to be filtered from list (${rejectedOutput.length}) =====\n`)
-  console.info(rejectedOutput);
+  if (rejectedOutput.length > 0) {
+    console.info(`\n===== Rejected Words to be filtered from list (${rejectedOutput.length}) =====\n`)
+    console.info(rejectedOutput);
+    fs.appendFileSync('./wordlists/rejected.txt', `${rejectedOutput.join('\n')}\n`);
+  }
 
-  console.info(`\n===== Words that need further consideration (${maybeOutput.length}) =====\n`)
-  console.info(maybeOutput);
-
-  console.info(`\n===== Approved Words to be added to list (${verifiedOutput.length}) =====\n`)
-  console.info(verifiedOutput);
-
-  if (verifiedOutput.length > 0) {
-    fs.appendFileSync('./wordlists/approved.txt', `${verifiedOutput.join('\n')}\n`);
+  if (pluralOutput.length > 0) {
+    console.info(`\n===== Plural Words identified from list (${pluralOutput.length}) =====\n`)
+    console.info(pluralOutput);
+    fs.appendFileSync('./wordlists/plurals.txt', `${pluralOutput.join('\n')}\n`);
   }
 
   if (maybeOutput.length > 0) {
+    console.info(`\n===== Words that need further consideration (${maybeOutput.length}) =====\n`)
+    console.info(maybeOutput);
     fs.appendFileSync('./wordlists/maybe.txt', `${maybeOutput.join('\n')}\n`);
   }
 
-  if (rejectedOutput.length > 0) {
-    fs.appendFileSync('./wordlists/rejected.txt', `${rejectedOutput.join('\n')}\n`);
+  if (verifiedOutput.length > 0) {
+    console.info(`\n===== Approved Words to be added to list (${verifiedOutput.length}) =====\n`)
+    console.info(verifiedOutput);
+    fs.appendFileSync('./wordlists/approved.txt', `${verifiedOutput.join('\n')}\n`);
   }
 
   process.exit();
@@ -69,7 +74,7 @@ const verify = async (answer, potential, previous) => {
     }
 
     const rl = readline.createInterface({ input, output });
-    const undoAnswer = await rl.question(`Is ${potential} a valid word? (s-skip)/a-accept/w-whoops/d-dunno/x-exit `);
+    const undoAnswer = await rl.question(`Is ${potential} a valid word? (s-skip) / a-accept / w-whoops / d-dunno / q-plural / x-exit `);
     rl.close();
     await verify(undoAnswer, potential, previous);
   }
@@ -78,7 +83,7 @@ const verify = async (answer, potential, previous) => {
     case 'W': // WHOOPS - Go back and confirm previous word, then recheck current word
       confirmWord(previous);
       const rl = readline.createInterface({ input, output });
-      const undoAnswer = await rl.question(`Is ${potential} a valid word? (s-skip)/a-accept/w-whoops/d-dunno/x-exit `);
+      const undoAnswer = await rl.question(`Is ${potential} a valid word? (s-skip) / a-accept / w-whoops / d-dunno / q-plural / x-exit `);
       rl.close();
       await verify(undoAnswer, potential, previous)
       break;
@@ -91,6 +96,11 @@ const verify = async (answer, potential, previous) => {
       break;
     case 'X': // EXIT - Kill script
       close();
+    case 'Q': // PLURAL - Rejected from pure list
+      rejected.add(potential);
+      plurals.add(potential);
+      console.info(potential, 'marked as pluralised and excluded from main list')
+      break;
     case 'S': // SKIP - Reject word, add to reject list and move on.
     default:
       rejected.add(potential);
@@ -104,10 +114,10 @@ const getPotentialWord = (attempt) => {
     close();
   }
 
-  const potential = generateWord(words);
+  const potential = generateWord(approvedList);
 
   if (
-    !checkWordExists(potential, approvedList)
+    checkWordExists(potential, approvedList)
     && !checkWordExists(potential, maybeList)
     && !checkWordExists(potential, ignoredList)
     && !verified.has(potential)
