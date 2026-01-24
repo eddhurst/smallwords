@@ -9,7 +9,7 @@
     "build": "node build.js",
     "clean": "rimraf dist && rimraf build",
     "pretest": "npm run build",
-    "test": "vitest --run",
+    "test": "vitest run --coverage",
     "prepublish": "npm run build",
     "preprocess": "npm run build",
     "process": "node build/processWords.js"
@@ -25,6 +25,10 @@
     "url": "git+https://github.com/eddhurst/smallwords.git"
   },
   "keywords": [
+    "small words",
+    "dictionary",
+    "five",
+    "letter",
     "random",
     "words",
     "5 letter",
@@ -37,8 +41,9 @@
   },
   "homepage": "https://github.com/eddhurst/smallwords#readme",
   "devDependencies": {
-    "esbuild": "^0.19.5",
-    "rimraf": "^5.0.5",
-    "vitest": "^0.34.6"
+    "@vitest/coverage-v8": "^4.0.18",
+    "esbuild": "^0.27.2",
+    "rimraf": "^6.1.2",
+    "vitest": "^4.0.18"
   }
 }
